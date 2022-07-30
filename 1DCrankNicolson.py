@@ -32,3 +32,25 @@ psico=psico/np.sqrt(normco)
 #psi=(1/(np.sqrt(2)))*(psi1+psi0)
 psi=psico
 Vz=0.5*wz**2*z**2*mass
+a=(1j*dt/hbar)/((4.0*mass*dz**2)/(hbar**2))
+b=np.empty(nz, dtype=complex)
+c=np.empty(nz, dtype=complex)
+for i in range(0,nz):
+    b[i]=1.0+0.5*dt/hbar*1j*(hbar**2/((dz**2*mass))+Vz[i])
+    c[i]=1.0-0.5*dt/hbar*1j*(hbar**2/((dz**2*mass))+Vz[i])
+A=np.empty([nz, nz], dtype=complex)
+B=np.empty([nz, nz], dtype=complex)
+for i in range(0,nz):
+    for j in range(0,nz):
+        if   (j==i):
+            A[i][j]=b[i]
+            B[i][j]=c[i]
+        elif (j==i+1):
+            A[i][j]=-a
+            B[i][j]=a
+        elif (j==i-1):
+            A[i][j]=-a
+            B[i][j]=a
+        else:
+            A[i][j]=0.0
+            B[i][j]=0.0 
