@@ -55,3 +55,29 @@ for i in range(0,nz):
             A[i][j]=0.0
             B[i][j]=0.0 
 invA=np.linalg.inv(A)
+for i in range(0,time_steps+1):
+    psis=(1/(np.sqrt(2)))*(psi0*np.exp(-1j*wz*t/2)+psi1*np.exp(-1j*3*wz*t/2))
+    rohco=np.exp(-((z-z0*np.sqrt(2)*absalpha*np.cos(wz*t))/z0)**2)/(z0*np.sqrt(np.pi)) 
+    ka=B.dot(psi)
+    psi=invA.dot(ka)
+    if(i%10==0): 
+          print(i)
+          ax1 = plt.subplots(1, sharex=True, figsize=(10,5))          
+          plt.plot(z*10**3,rohco/10**(3),
+          color='black',linestyle='-',linewidth=3.0,label="$|\psi_{α} (z, t)|^2$")
+          #plt.plot(z*10**3,np.real(psis*np.conjugate(psis))/10**(3),
+          #color='black',linestyle='-',linewidth=3.0,label="$|\psi_{s} (z, t)|^2$")
+          plt.plot(z*10**3,np.real(psi*np.conjugate(psi))/10**(3),
+          color='deepskyblue',linestyle='-.',linewidth=3.0,label = "$|\psi (z, t)|^2$")
+          plt.xlabel("Position in [mm]",fontsize=16) 
+          plt.ylabel(r'Probability density [1/mm]',fontsize=16)
+          plt.ylim([0,70])
+          plt.xlim([zmin*10**3,zmax*10**3]) 
+          plt.xticks(fontsize= 16)
+          plt.xticks([-0.08,-0.04,0,0.04,0.08])
+          plt.yticks(fontsize= 16) 
+          plt.text(0.04, 56.5,
+          "t=".__add__(str(round(t*10**(6),1))).__add__(" $\mu$s"),fontsize=19 )
+          plt.legend(loc=2,fontsize=19,handlelength=3,frameon=False) 
+          plt.show()
+    t=t+dt
