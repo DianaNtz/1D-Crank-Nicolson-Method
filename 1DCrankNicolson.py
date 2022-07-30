@@ -5,6 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os
 import imageio
+filenames = []
 hbar = 1.05e-34
 mass = 9.11e-31 # mass electron
 wz=110*2*np.pi*1000 # freuquency in Hz
@@ -79,5 +80,14 @@ for i in range(0,time_steps+1):
           plt.text(0.04, 56.5,
           "t=".__add__(str(round(t*10**(6),1))).__add__(" $\mu$s"),fontsize=19 )
           plt.legend(loc=2,fontsize=19,handlelength=3,frameon=False) 
-          plt.show()
+          filename ='bla{0:.0f}.png'.format(i/10)
+          filenames.append(filename)    
+          plt.savefig(filename,dpi=250)
+          plt.close()
     t=t+dt
+with imageio.get_writer('coherentstate.gif', mode='I') as writer:
+    for filename in filenames:
+        image = imageio.imread(filename)
+        writer.append_data(image)       
+for filename in set(filenames):
+    os.remove(filename)
