@@ -54,3 +54,4 @@ for i in range(0,nz):
         else:
             A[i][j]=0.0
             B[i][j]=0.0 
+invA=np.linalg.inv(A)
