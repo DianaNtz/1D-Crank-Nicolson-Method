@@ -1,11 +1,14 @@
 """
-@author: Diana Nitzschke
+The code below was written by @author: https://github.com/DianaNtz and is an 
+implementation of the 1D Crank Nicolson method. It solves in particular the 
+Schrödinger equation for the quantum harmonic oscillator.
 """
 import numpy as np
 import matplotlib.pyplot as plt
 import os
 import imageio
 filenames = []
+#some initial values
 hbar = 1.05e-34
 mass = 9.11e-31 #mass electron
 wz=110*2*np.pi*1000 #freuquency in Hz
@@ -39,6 +42,7 @@ c=np.empty(nz, dtype=complex)
 for i in range(0,nz):
     b[i]=1.0+0.5*dt/hbar*1j*(hbar**2/((dz**2*mass))+Vz[i])
     c[i]=1.0-0.5*dt/hbar*1j*(hbar**2/((dz**2*mass))+Vz[i])
+#setting up matrices A and B
 A=np.empty([nz, nz], dtype=complex)
 B=np.empty([nz, nz], dtype=complex)
 for i in range(0,nz):
@@ -56,11 +60,13 @@ for i in range(0,nz):
             A[i][j]=0.0
             B[i][j]=0.0 
 invA=np.linalg.inv(A)
+#starting loop for time iteration
 for i in range(0,time_steps+1):
     psis=(1/(np.sqrt(2)))*(psi0*np.exp(-1j*wz*t/2)+psi1*np.exp(-1j*3*wz*t/2))
     rohco=np.exp(-((z-z0*np.sqrt(2)*absalpha*np.cos(wz*t))/z0)**2)/(z0*np.sqrt(np.pi)) 
     ka=B.dot(psi)
     psi=invA.dot(ka)
+    #creating gif animation with imageio
     if(i%10==0): 
           print(i)
           ax1 = plt.subplots(1, sharex=True, figsize=(10,5))          
