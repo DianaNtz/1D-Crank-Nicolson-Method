@@ -33,8 +33,8 @@ absalpha=2.5
 psico=np.exp(-((z-z0*np.sqrt(2)*absalpha)/z0)**2/2)
 normco=np.sum(psico*np.conjugate(psico))*dz
 psico=psico/np.sqrt(normco)
-psi=(1/(np.sqrt(2)))*(psi1+psi0)
-#psi=psico
+#psi=(1/(np.sqrt(2)))*(psi1+psi0)
+psi=psico
 Vz=0.5*wz**2*z**2*mass
 a=(1j*dt/hbar)/((4.0*mass*dz**2)/(hbar**2))
 b=np.empty(nz, dtype=complex)
@@ -70,10 +70,10 @@ for i in range(0,time_steps+1):
     if(i%10==0): 
           print(i)
           ax1 = plt.subplots(1, sharex=True, figsize=(10,5))          
-          #plt.plot(z*10**3,rohco/10**(3),
-          #color='black',linestyle='-',linewidth=3.0,label="$|\psi_{α} (z, t)|^2$")
-          plt.plot(z*10**3,np.real(psis*np.conjugate(psis))/10**(3),
-          color='black',linestyle='-',linewidth=3.0,label="$|\psi_{s} (z, t)|^2$")
+          plt.plot(z*10**3,rohco/10**(3),
+          color='black',linestyle='-',linewidth=3.0,label="$|\psi_{α} (z, t)|^2$")
+          #plt.plot(z*10**3,np.real(psis*np.conjugate(psis))/10**(3),
+          #color='black',linestyle='-',linewidth=3.0,label="$|\psi_{s} (z, t)|^2$")
           plt.plot(z*10**3,np.real(psi*np.conjugate(psi))/10**(3),
           color='deepskyblue',linestyle='-.',linewidth=3.0,label = "$|\psi (z, t)|^2$")
           plt.xlabel("Position in [mm]",fontsize=16) 
@@ -88,10 +88,10 @@ for i in range(0,time_steps+1):
           plt.legend(loc=2,fontsize=19,handlelength=3,frameon=False) 
           filename ='bla{0:.0f}.png'.format(i/10)
           filenames.append(filename)    
-          plt.savefig(filename,dpi=250)
+          plt.savefig(filename,dpi=120)
           plt.close()
     t=t+dt
-with imageio.get_writer('superpositionstate.gif', mode='I') as writer:
+with imageio.get_writer('coherentstate.gif', mode='I') as writer:
     for filename in filenames:
         image = imageio.imread(filename)
         writer.append_data(image)       
